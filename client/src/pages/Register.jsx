@@ -1,19 +1,63 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Register = () => {
+  const [inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [err, setErr] = useState(null);
+  const navigate = useNavigate()
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(inputs);
+      await axios.post("/auth/register", inputs);
+      navigate('/login')
+    } catch (error) {
+      setErr(error.response.data);
+    }
+  };
+
   return (
-    <div className='auth'>
+    <div className="auth">
       <h1>Login</h1>
       <form>
-        <input required type='text' placeholder='username'></input>
-        <input required type='email' placeholder='email'></input>
-        <input required type='password' placeholder='password'></input>
-        <button>Login</button>
-        <p>This is an error</p>
-        <span>Don't you have an account? <Link to="/register">Register</Link></span>
+        <input
+          required
+          type="text"
+          placeholder="username"
+          name="username"
+          onChange={handleChange}
+        ></input>
+
+        <input
+          required
+          type="email"
+          placeholder="email"
+          name="email"
+          onChange={handleChange}
+        ></input>
+        <input
+          required
+          type="password"
+          placeholder="password"
+          name="password"
+          onChange={handleChange}
+        ></input>
+        <button onClick={handleSubmit}>Register</button>
+      { err && <p>{err}</p>}        
+        <span>
+          Don't you have an account? <Link to="/register">Register</Link>
+        </span>
       </form>
     </div>
-  )
-}
- 
-export default Register
+  );
+};
+
+export default Register;
