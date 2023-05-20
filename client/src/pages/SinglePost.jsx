@@ -49,7 +49,7 @@ const navigate = useNavigate()
           </div>
           {currentUser?.username === post?.username && (
             <div className="edit">
-              <Link to={`/write?edit=2`}>
+              <Link to={`/write?edit=2`} state={post}>
                 <img src="/images/edit.png" />
               </Link>
               <img onClick={handleDelete} src="/images/delete.png" />
@@ -60,7 +60,7 @@ const navigate = useNavigate()
 
         {post.desc}
       </div>
-      <Menu />
+      <Menu cat={post.cat}/>
     </div>
   );
 };
